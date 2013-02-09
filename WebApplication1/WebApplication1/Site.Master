@@ -1,0 +1,172 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebApplication1.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title></title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <script language="javascript" type="text/javascript">
+// <![CDATA[
+
+        function File1_onclick() {
+
+        }
+
+// ]]>
+    </script>
+</head>
+<body>
+    <form runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <h1>
+                    University of Southern CalIfornia</h1>
+            </div>
+            <div class="loginDisplay">
+                <asp:LoginView ID="Login" runat="server" EnableViewState="false">
+                    <AnonymousTemplate>
+                        [ <a href="~/Account/Login.aspx" ID="HeadLoginStatus" runat="server">Log In</a> ]
+                    </AnonymousTemplate>
+                    <LoggedInTemplate>
+                        Welcome <span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
+                        [ <asp:LoginStatus ID="Login" runat="server" LogoutAction="Redirect" LogoutText="Log Out" LogoutPageUrl="~/"/> ]
+                    </LoggedInTemplate>
+                </asp:LoginView>
+            </div>
+        </div>
+        <div class="main" 
+            style="width: auto; height: 585px; top: auto; right: auto; bottom: auto; left: auto">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                <p>
+                    Application Form</p>
+            </asp:ContentPlaceHolder>
+            Please enter the following details:<br />
+            <br />
+            First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="FName" runat="server" ForeColor="Black" Height="22px" 
+                ontextchanged="TextBox1_TextChanged"></asp:TextBox>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                ErrorMessage="Req field" ControlToValidate="FName"></asp:RequiredFieldValidator>
+            <br />
+            <br />
+            Last Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                ControlToValidate="TextBox1" ErrorMessage="RequiredFieldValidator"></asp:RequiredFieldValidator>
+            <br />
+            <br />
+            Email ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:RegularExpressionValidator ID="emailid" runat="server" 
+                ControlToValidate="TextBox2" ErrorMessage="!!" 
+                ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
+                ControlToValidate="TextBox2" ErrorMessage="RequiredFieldValidator"></asp:RequiredFieldValidator>
+            <br />
+            <br />
+            USC ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:RegularExpressionValidator 
+                ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox3" 
+                ErrorMessage="RegularExpressionValidator" 
+                ValidationExpression="\d{4}-\d{4}-\d{2}"></asp:RegularExpressionValidator>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" 
+                ControlToValidate="TextBox3" ErrorMessage="RequiredFieldValidator"></asp:RequiredFieldValidator>
+            <br />
+            <br />
+            Major&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:DropDownList ID="DropDownList1" runat="server">
+                <asp:ListItem></asp:ListItem>
+                <asp:ListItem>CS</asp:ListItem>
+                <asp:ListItem>ME</asp:ListItem>
+                <asp:ListItem>EE</asp:ListItem>
+                <asp:ListItem>AE</asp:ListItem>
+            </asp:DropDownList>
+            <br />
+            <br />
+            Upload Resume:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:FileUpload ID="FileUpload1" runat="server" />
+            
+            <script type ="text/javascript">
+                var validFilesTypes = ["pdf", "doc"];
+                function ValidateFile() {
+                    var file = document.getElementById("<%=FileUpload1.ClientID%>");
+                    var label = document.getElementById("<%=Label1.ClientID%>");
+                    var path = file.value;
+                    var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+                    var isValidFile = false;
+                    for (var i = 0; i < validFilesTypes.length; i++) {
+                        if (ext == validFilesTypes[i]) {
+                            isValidFile = true;
+                            break;
+                        }
+                    }
+                    if (!isValidFile) {
+                        label.style.color = "red";
+                        label.innerHTML = "Invalid File. Please upload a File with" +
+         " extension:\n\n" + validFilesTypes.join(", ");
+                    }
+                    return isValidFile;
+                }
+            </script>
+
+
+            <br />
+            <asp:Button ID="btnUpload" runat="server"  Text="Upload"  
+            OnClientClick="return ValidateFile()" OnClick="btnUpload_Click"  />
+            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+            <br />
+            <br />
+            <br />
+
+
+            Add recommenders:<br />
+            Recommender 1<br />
+            Name
+            <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" 
+                ControlToValidate="TextBox4" ErrorMessage="reqd"></asp:RequiredFieldValidator>
+&nbsp;Email ID<asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+&nbsp;Reqd
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" 
+                ControlToValidate="TextBox5" ErrorMessage="Valid email"></asp:RequiredFieldValidator>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <asp:Button ID="Button2" runat="server" onclick="Button2_Click4" 
+                Text="Send Email" />
+&nbsp;
+            <br />
+            <br />
+            Name<asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
+&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" 
+                ControlToValidate="TextBox6" ErrorMessage="reqd"></asp:RequiredFieldValidator>
+&nbsp; Email ID<asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+&nbsp;Reqd&nbsp; Valid email<br />
+            <br />
+            <br />
+            <br />
+            <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="Submit" 
+                Width="172px" />
+            &nbsp;&nbsp;
+            
+            
+            <%--<asp:Button ID="Clear" runat="server" onclick="Button2_Click2" Text="Clear" 
+                Width="182px" <input type="reset" Name="Reset" />--%>
+            
+            
+            <br />
+            <br />
+            <br />
+            <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </form>
+</body>
+</html>
